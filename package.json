@@ -5,12 +5,11 @@
   "main": "index.js",
   "devDependencies": {
     "@types/express": "^4.17.1",
-    "jsmin": "^1.0.1",
-    "jsmin-sourcemap": "^0.16.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "uglify-js": "^3.19.3"
   },
   "scripts": {
-    "minify": "jsmin -o dist/inter-pull.min.js dist/inter-pull.js",
+    "minify": "uglifyjs -cm -o dist/inter-pull.min.js dist/inter-pull.js",
     "echo_header": "echo '/* inter-pull v1.0.0\n * License: MIT\n * Author: Gabriele Girelli */'",
     "add_header": "npm run --silent echo_header | cat - dist/inter-pull.js > dist/tmp.js && mv dist/tmp.js dist/inter-pull.js",
     "add_min_header": "npm run --silent echo_header | cat - dist/inter-pull.min.js > dist/tmp.js && mv dist/tmp.js dist/inter-pull.min.js",

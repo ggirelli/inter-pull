@@ -1,7 +1,6 @@
 /* inter-pull v1.0.0
  * License: MIT
  * Author: Gabriele Girelli */
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -11,8 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSocialInteractions = getSocialInteractions;
 /// Enum identifying a well-known social media platform
 var SocialMediaPlatform;
 (function (SocialMediaPlatform) {
@@ -23,23 +20,23 @@ var SocialMediaPlatform;
 /// Retrieve InteractionBundle for a specific POST_ID on BlueSky
 function getBlueSkyInteractions(post_id, host) {
     return __awaiter(this, void 0, void 0, function* () {
-        const api_response = yield fetch("https://public.api.bsky.app/xrpc/app.bsky.feed.getPosts?uris=at://${did}/app.bsky.feed.post/${post_id}");
+        const api_response = yield fetch(`https://public.api.bsky.app/xrpc/app.bsky.feed.getPosts?uris=at://${host}/app.bsky.feed.post/${post_id}`);
         const api_json_response = yield api_response.json();
         return {
-            likes: api_json_response.replyCount,
-            replies: api_json_response.likeCount,
-            reposts: api_json_response.repostCount
+            likes: api_json_response[0].replyCount,
+            replies: api_json_response[0].likeCount,
+            reposts: api_json_response[0].repostCount
         };
     });
 }
 /// Retrieve InteractionBundle for a specific POST_ID on HackerNews
 function getHackerNewsInteractions(post_id) {
     return __awaiter(this, void 0, void 0, function* () {
-        const api_response = yield fetch("https://hacker-news.firebaseio.com/v0/item/${post_id}.json?print=pretty");
+        const api_response = yield fetch(`https://hacker-news.firebaseio.com/v0/item/${post_id}.json?print=pretty`);
         const api_json_response = yield api_response.json();
         return {
-            likes: api_json_response.score,
-            replies: api_json_response.descendants,
+            likes: api_json_response[0].score,
+            replies: api_json_response[0].descendants,
             reposts: 0
         };
     });
@@ -47,12 +44,12 @@ function getHackerNewsInteractions(post_id) {
 /// Retrieve InteractionBundle for a specific POST_ID on Mastodon
 function getMastodonInteractions(post_id, host) {
     return __awaiter(this, void 0, void 0, function* () {
-        const api_response = yield fetch("https://${host}/api/v1/timelines/public?min_id=${post_id-1}&limit=1");
+        const api_response = yield fetch(`https://${host}/api/v1/timelines/public?min_id=${post_id - 1}&limit=1`);
         const api_json_response = yield api_response.json();
         return {
-            likes: api_json_response.favourites_count,
-            replies: api_json_response.replies_count,
-            reposts: api_json_response.reblogs_count
+            likes: api_json_response[0].favourites_count,
+            replies: api_json_response[0].replies_count,
+            reposts: api_json_response[0].reblogs_count
         };
     });
 }

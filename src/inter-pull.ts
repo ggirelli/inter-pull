@@ -16,40 +16,40 @@ interface InteractionBundle {
 /// Retrieve InteractionBundle for a specific POST_ID on BlueSky
 async function getBlueSkyInteractions(post_id: string, host: string): Promise<InteractionBundle> {
     const api_response = await fetch(
-        "https://public.api.bsky.app/xrpc/app.bsky.feed.getPosts?uris=at://${did}/app.bsky.feed.post/${post_id}"
+        `https://public.api.bsky.app/xrpc/app.bsky.feed.getPosts?uris=at://${host}/app.bsky.feed.post/${post_id}`
     );
     const api_json_response = await api_response.json();
     return {
-        likes: api_json_response.replyCount,
-        replies: api_json_response.likeCount,
-        reposts: api_json_response.repostCount
+        likes: api_json_response[0].replyCount,
+        replies: api_json_response[0].likeCount,
+        reposts: api_json_response[0].repostCount
     };
 }
 
 /// Retrieve InteractionBundle for a specific POST_ID on HackerNews
 async function getHackerNewsInteractions(post_id: string): Promise<InteractionBundle> {
-    const api_response = await fetch("https://hacker-news.firebaseio.com/v0/item/${post_id}.json?print=pretty");
+    const api_response = await fetch(`https://hacker-news.firebaseio.com/v0/item/${post_id}.json?print=pretty`);
     const api_json_response = await api_response.json();
     return {
-        likes: api_json_response.score,
-        replies: api_json_response.descendants,
+        likes: api_json_response[0].score,
+        replies: api_json_response[0].descendants,
         reposts: 0
     };
 }
 
 /// Retrieve InteractionBundle for a specific POST_ID on Mastodon
 async function getMastodonInteractions(post_id: number, host: string): Promise<InteractionBundle> {
-    const api_response = await fetch("https://${host}/api/v1/timelines/public?min_id=${post_id-1}&limit=1");
+    const api_response = await fetch(`https://${host}/api/v1/timelines/public?min_id=${post_id-1}&limit=1`);
     const api_json_response = await api_response.json();
     return {
-        likes: api_json_response.favourites_count,
-        replies: api_json_response.replies_count,
-        reposts: api_json_response.reblogs_count
+        likes: api_json_response[0].favourites_count,
+        replies: api_json_response[0].replies_count,
+        reposts: api_json_response[0].reblogs_count
     };
 }
 
 /// Retrieve InteractionBundle for a specific POST_ID on a social media HOST
-export async function getSocialInteractions(
+async function getSocialInteractions(
     social_media: SocialMediaPlatform,
     post_id: string,
     host?: string
