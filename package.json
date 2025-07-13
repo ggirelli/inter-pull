@@ -1,6 +1,6 @@
 {
   "name": "inter-pull",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Library with methods to collect post interactions from well known social media platform. The name is a bad pun with \"INTERPOL\", the international criminal police organization.",
   "main": "index.js",
   "devDependencies": {
@@ -10,7 +10,7 @@
   },
   "scripts": {
     "minify": "uglifyjs -cm -o dist/inter-pull.min.js dist/inter-pull.js",
-    "echo_header": "echo '/* inter-pull v1.0.0\n * License: MIT\n * Author: Gabriele Girelli */'",
+    "echo_header": "echo \"/* inter-pull v$(npm pkg get version | tr -d '\"')\n * License: $(npm pkg get license | tr -d '\"')\n * Author: $(npm pkg get author | tr -d '\"') */\"",
     "add_header": "npm run --silent echo_header | cat - dist/inter-pull.js > dist/tmp.js && mv dist/tmp.js dist/inter-pull.js",
     "add_min_header": "npm run --silent echo_header | cat - dist/inter-pull.min.js > dist/tmp.js && mv dist/tmp.js dist/inter-pull.min.js",
     "build": "tsc && npm run minify && npm run add_header && npm run add_min_header"
@@ -20,8 +20,8 @@
     "url": "git+https://github.com/ggirelli/inter-pull-js.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Gabriele Girelli",
+  "license": "MIT",
   "type": "commonjs",
   "bugs": {
     "url": "https://github.com/ggirelli/inter-pull-js/issues"
