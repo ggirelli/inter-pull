@@ -1,4 +1,4 @@
-/* inter-pull v1.0.0
+/* inter-pull v1.0.1
  * License: MIT
  * Author: Gabriele Girelli */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -35,7 +35,8 @@ function getHackerNewsInteractions(post_id) {
         const api_response = yield fetch(`https://hacker-news.firebaseio.com/v0/item/${post_id}.json?print=pretty`);
         const api_json_response = yield api_response.json();
         return {
-            likes: api_json_response.score,
+            // NOTE: we subtract 1 from the score as the minimum score is 1
+            likes: api_json_response.score - 1,
             replies: api_json_response.descendants,
             reposts: 0
         };
