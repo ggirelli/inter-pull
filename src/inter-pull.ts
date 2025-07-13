@@ -20,9 +20,9 @@ async function getBlueSkyInteractions(post_id: string, host: string): Promise<In
     );
     const api_json_response = await api_response.json();
     return {
-        likes: api_json_response[0].replyCount,
-        replies: api_json_response[0].likeCount,
-        reposts: api_json_response[0].repostCount
+        likes: api_json_response.posts[0].replyCount,
+        replies: api_json_response.posts[0].likeCount,
+        reposts: api_json_response.posts[0].repostCount
     };
 }
 
@@ -31,8 +31,8 @@ async function getHackerNewsInteractions(post_id: string): Promise<InteractionBu
     const api_response = await fetch(`https://hacker-news.firebaseio.com/v0/item/${post_id}.json?print=pretty`);
     const api_json_response = await api_response.json();
     return {
-        likes: api_json_response[0].score,
-        replies: api_json_response[0].descendants,
+        likes: api_json_response.score,
+        replies: api_json_response.descendants,
         reposts: 0
     };
 }
@@ -62,7 +62,7 @@ async function getSocialInteractions(
             return getBlueSkyInteractions(post_id, host);
         case SocialMediaPlatform.Mastodon:
             if (host === undefined) {
-                throw new Error("missing BlueSky DID to retrieve interactions.");
+                throw new Error("missing Mastodon host to retrieve interactions.");
             }
             return getMastodonInteractions(parseInt(post_id), host);
         case SocialMediaPlatform.HackerNews:
