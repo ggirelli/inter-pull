@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Score from Hacker-News.
+- Accidentally swapped likes and replies for BlueSky.
 
 ## [1.0.0]
 

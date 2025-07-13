@@ -31,7 +31,7 @@ async function getHackerNewsInteractions(post_id: string): Promise<InteractionBu
     const api_response = await fetch(`https://hacker-news.firebaseio.com/v0/item/${post_id}.json?print=pretty`);
     const api_json_response = await api_response.json();
     return {
-        // NOTE: we subtract 1 from the score as the minimum score is 1
+        // NOTE: we subtract 1 from the score as the minimum score is
         likes: api_json_response.score - 1,
         replies: api_json_response.descendants,
         reposts: 0
