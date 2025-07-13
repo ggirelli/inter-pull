@@ -44,7 +44,7 @@ function getHackerNewsInteractions(post_id) {
 /// Retrieve InteractionBundle for a specific POST_ID on Mastodon
 function getMastodonInteractions(post_id, host) {
     return __awaiter(this, void 0, void 0, function* () {
-        const api_response = yield fetch(`https://${host}/api/v1/timelines/public?min_id=${post_id - 1}&limit=1`);
+        const api_response = yield fetch(`https://${host}/api/v1/timelines/public?min_id=${post_id}&limit=1`);
         const api_json_response = yield api_response.json();
         return {
             likes: api_json_response[0].favourites_count,
@@ -66,7 +66,9 @@ function getSocialInteractions(social_media, post_id, host) {
                 if (host === undefined) {
                     throw new Error("missing Mastodon host to retrieve interactions.");
                 }
-                return getMastodonInteractions(parseInt(post_id), host);
+                return getMastodonInteractions(
+                // NOTE: we use BigInt due to JavaScript limited precision
+                (BigInt(post_id) - BigInt(1)).toString(), host);
             case SocialMediaPlatform.HackerNews:
                 return getHackerNewsInteractions(post_id);
         }

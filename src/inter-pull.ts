@@ -38,8 +38,8 @@ async function getHackerNewsInteractions(post_id: string): Promise<InteractionBu
 }
 
 /// Retrieve InteractionBundle for a specific POST_ID on Mastodon
-async function getMastodonInteractions(post_id: number, host: string): Promise<InteractionBundle> {
-    const api_response = await fetch(`https://${host}/api/v1/timelines/public?min_id=${post_id-1}&limit=1`);
+async function getMastodonInteractions(post_id: string, host: string): Promise<InteractionBundle> {
+    const api_response = await fetch(`https://${host}/api/v1/timelines/public?min_id=${post_id}&limit=1`);
     const api_json_response = await api_response.json();
     return {
         likes: api_json_response[0].favourites_count,
@@ -64,7 +64,11 @@ async function getSocialInteractions(
             if (host === undefined) {
                 throw new Error("missing Mastodon host to retrieve interactions.");
             }
-            return getMastodonInteractions(parseInt(post_id), host);
+            return getMastodonInteractions(
+                // NOTE: we use BigInt due to JavaScript limited precision
+                (BigInt(post_id) - BigInt(1)).toString(),
+                host
+            );
         case SocialMediaPlatform.HackerNews:
             return getHackerNewsInteractions(post_id);
     }
