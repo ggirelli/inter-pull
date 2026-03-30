@@ -28,6 +28,6 @@
   },
   "homepage": "https://github.com/ggirelli/inter-pull-js#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.22.1"
   }
 }
